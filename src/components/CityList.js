@@ -31,6 +31,7 @@ export default function CityList({ $app, initialState, handleLoadMore }) {
   this.render = () => {
     this.$target.innerHTML = this.template();
 
+    // isEnd가 false라면
     if (!this.state.isEnd) {
       const $loadMoreButton = document.createElement("button");
       $loadMoreButton.className = "add-items-btn";
