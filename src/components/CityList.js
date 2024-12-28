@@ -1,27 +1,24 @@
-export default function CityList({ $app, initialState, handleLoadMore }) {
+export default function CityList({ $app, initialState, handleItemClick, handleLoadMore }) {
   this.state = initialState;
-
   this.$target = document.createElement("div");
   this.$target.className = "city-list";
 
+  this.handleItemClick = handleItemClick;
   this.handleLoadMore = handleLoadMore;
-
-  console.log($app);
 
   $app.appendChild(this.$target);
 
   this.template = () => {
     let temp = `<div class="city-items-container">`;
-
-    if (this.state?.cities) {
-      this.state.cities.forEach(element => {
+    if (this.state) {
+      this.state.cities.forEach(elm => {
         temp += `
-          <div class="city-item" id=${element.id}>
-            <img src=${element.image} />
-            <div class="city-item-info">${element.city}, ${element.country}</div>
-            <div class="city-item-score">⭐ ${element.total}</div>
-          </div>
-        `;
+                  <div class="city-item" id=${elm.id}>
+                      <img src=${elm.image}></img>
+                      <div class="city-item-info">${elm.city}, ${elm.country}</div>
+                      <div class="city-item-score">⭐️ ${elm.total}</div>
+                  </div>
+             `;
       });
       temp += `</div>`;
     }
@@ -30,8 +27,12 @@ export default function CityList({ $app, initialState, handleLoadMore }) {
 
   this.render = () => {
     this.$target.innerHTML = this.template();
+    this.$target.querySelectorAll("div.city-item").forEach(elm => {
+      elm.addEventListener("click", () => {
+        this.handleItemClick(elm.id);
+      });
+    });
 
-    // isEnd가 false라면
     if (!this.state.isEnd) {
       const $loadMoreButton = document.createElement("button");
       $loadMoreButton.className = "add-items-btn";
